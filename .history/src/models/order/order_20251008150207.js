@@ -1,0 +1,43 @@
+import mongoose from "mongoose";
+
+const orderSchema = new mongoose.Schema(
+  {
+    orderCode: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+    },
+    distributorCode: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+    },
+    products: [
+      {
+        productCode: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "product",
+          required: true,
+        },
+        quantity: {
+          type: Number,
+          required: true,
+          min: 1,
+        },
+      },
+    ],
+    orderDate: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+  {
+    timestamps: true,
+    collection: "Orders",
+  }
+);
+
+const Order = mongoose.models.Order || mongoose.model("Order", orderSchema);
+export default Order;
